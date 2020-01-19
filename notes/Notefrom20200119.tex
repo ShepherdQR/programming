@@ -1,0 +1,45 @@
+\documentclass[UTF8]{article}
+\usepackage{ctex}
+\usepackage{multirow,booktabs}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,bm,mathrsfs,upgreek} 
+\usepackage[paper=a4paper,top=3.5cm,bottom=2.5cm,
+left=2.7cm,right=2.7cm,
+headheight=1.0cm,footskip=0.7cm]{geometry}
+\usepackage{color,graphicx,verbatim}
+\RequirePackage{setspace}%%ÐÐŒäŸà
+\setstretch{1.523}
+
+\begin{document}
+Started on 2002011920:23
+
+程序设计实习，北京大学，信息科学技术学院
+郭炜，刘家瑛
+
+c 相关
+函数指针，指向函数起始地址
+code c0001.c
+code c0001.cpp
+
+
+
+c语言快速排序函数：
+void qsort(void *base, int nelem, unsigned int width, int(* pfCompare)(const void *, const void *));
+这里面*pfCompare就是函数指针
+起始地址，元素个数，每个元素大小，比较函数（自己编写）
+int 比较函数(const void *elem1, const void *elem2);
+比较函数编写，返回负整数会让elem1在前，返回正整数会让2在前，返回0则1和2不分前后。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
