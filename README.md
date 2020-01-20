@@ -12,7 +12,6 @@ git commit -m '1st_m'
 git remote add origin git@github.com:ShepherdQR/programming.git
 git push -u origin master -f
 
-
 then upload to an old repository:
 
 git init
@@ -20,4 +19,15 @@ git reomte add origin git@github.com:ShepherdQR/programming.git
 get pull origin master
 git add .
 git commit -m '1st_m'
+git push -u origin master
+
+
+
+second day 2020012017:44,
+
+git init
+git reomte add origin git@github.com:ShepherdQR/programming.git
+get pull origin master
+git add .
+git commit -m 'day2'
 git push -u origin master
