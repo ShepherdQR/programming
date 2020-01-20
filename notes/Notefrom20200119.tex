@@ -14,13 +14,15 @@ Started on 2002011920:23
 
 程序设计实习，北京大学，信息科学技术学院
 郭炜，刘家瑛
+*code： 代码
+*question: 提出的问题
 
-c 相关
+
+\section{c 相关}
+\subsection{函数指针}
 函数指针，指向函数起始地址
-code c0001
-code cpp0001
-
-
+*code c0001
+*code cpp0001
 
 c语言快速排序函数：
 void qsort(void *base, int nelem, unsigned int width, int(* pfCompare)(const void *, const void *));
@@ -29,8 +31,8 @@ void qsort(void *base, int nelem, unsigned int width, int(* pfCompare)(const voi
 int 比较函数(const void *elem1, const void *elem2);
 比较函数编写，返回负整数会让elem1在前，返回正整数会让2在前，返回0则1和2不分前后。
 
+\subsection{命令行参数}
 2020012017:44,
-命令行：
 win+R搜索cmd，
 notepad t001.txt
 copy file1.txt file2.txt
@@ -38,8 +40,89 @@ copy file1.txt file2.txt
 int main(int argc, char * argv[]){...}
 argc,参数个数，>=1;
 argv, 指针数组，argv[0]指向的字符串是第一个命令行参数，指向文件名，argv[i]指向i+1个命令行参数
-打印所有命令行参数的程序c0003.c.
+打印所有命令行参数的程序*code c0003.c.
 
+\subsection{位运算}
+\begin{comment}
+与&，双目,2个1才是1
+21 & 18 = 16
+某位清0，或提取变量某一位。
+如将int低8位清0:
+n = n & 0xffffff00;
+n &= 0xffffff00;
+对于short的n是 n &= 0xff00;
+*question: 判断int右起从0开始第7位是否是1？
+看n & 0x80 是不是0x80即可。
+0x80 = 1000 0000 。
+
+
+或|，双目,2个0才是0
+21 | 18 = 23
+某些位置1，保留其余不变，
+如低8位变成1其余不变，
+n |= 0xffffffea
+
+
+
+非~，单目,
+~21 = 0xff
+
+
+
+异或^，双目, 不同时取1.
+21 ^ 18 = 7
+某些位取反，其余不变。
+n ^= 0xff
+1 1 0
+0 0 0
+1 0 1
+0 1 1
+发现 a^b=c,能得到b^c=a, c^a=b, 可用于加密解密，如用秘钥b加密a。
+a b --c | a b -a
+b c --a | b a -b
+c a --b | a b -a
+如以下可实现2个变量直接交换：
+a ^= b;
+b ^= a;
+a ^= b;
+
+
+<<左移，双目
+a<<b = a*2^b
+a左移b位，高位丢弃，低位补0
+
+
+>>右移，双目
+有符号位如long, int, short, char, 右移后左边补的数和符号位相同。
+无符号的补0
+往小取整
+-25 >> 4 = -2
+-2 >> 4 = -1
+18 >> 4 = 1
+*code c0004
+
+*question: 2个int的a和n=[0,31],取a的第n位。
+(a>>n) & 0x0001;
+(a>>n) & 1;
+或者： (a & (1<<n))>> n
+\end{comment}
+
+\subsection{引用和常量}
+% const T & 可以初始化 T &，反过来不行
+\begin{comment}
+const int MAX_VAL = 23;
+const double Pi = 3.14;
+const char * schol_name = "mit";
+
+1）不能通过const指针修改其所指向的内容；
+2）常量指针不能赋值给非常量指针，除非强制类型转换(int *),反过来可以。
+3）函数中const能防止参数指针指向的地方的数据被修改
+void MyPrintf( const char *p){
+    strcpy(p," by QR");//编译应该会出错
+    printf("%s\n",p);
+}
+
+\end{comment}
 
 
 
