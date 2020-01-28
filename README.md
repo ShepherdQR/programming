@@ -33,6 +33,7 @@ git push -u origin master
 
 
 day3 2020012821:58:
+day3 2020012822:37:
 git init
 git reomte add origin git@github.com:ShepherdQR/programming.git
 get pull origin master
