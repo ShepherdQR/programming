@@ -23,11 +23,19 @@ git push -u origin master
 
 
 
-second day 2020012017:44,
-
+second day 2020012017:44:
 git init
 git reomte add origin git@github.com:ShepherdQR/programming.git
 get pull origin master
 git add .
 git commit -m 'day2'
+git push -u origin master
+
+
+day3 2020012821:58:
+git init
+git reomte add origin git@github.com:ShepherdQR/programming.git
+get pull origin master
+git add .
+git commit -m 'day3'
 git push -u origin master

@@ -1,0 +1,7 @@
+
+From 2020012820:16
+There are 1340 problems to solve for the next pariod of the life.
+
+All from tonight.
+
+leet0001.cpp: 1. Two Sum
