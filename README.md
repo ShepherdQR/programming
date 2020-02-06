@@ -47,5 +47,5 @@ git init
 git reomte add origin git@github.com:ShepherdQR/programming.git
 get pull origin master
 git add .
-git commit -m 'day3'
+git commit -m 'day4'
 git push -u origin master
