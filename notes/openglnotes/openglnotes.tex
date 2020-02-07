@@ -14,8 +14,8 @@ headheight=1.0cm,footskip=0.7cm]{geometry}
 
 \section{basic}
 
-顶点数组对象：Vertex Array Object，VAO
-顶点缓冲对象：Vertex Buffer Object，VBO
+顶点数组对象：Vertex Array Object，VAO，定义的定点数据存储方式。
+顶点缓冲对象：Vertex Buffer Object，VBO，管理GPU上存储VAO的内存。可以一次发送尽量多的数据到GPU
 索引缓冲对象：Element Buffer Object，EBO或Index Buffer Object，IBO
 
 3D坐标转为2D坐标的处理过程是由OpenGL的图形渲染管线（Graphics Pipeline）管理。
@@ -28,7 +28,7 @@ headheight=1.0cm,footskip=0.7cm]{geometry}
 图元(Primitive)：指定数据（坐标和颜色值）的渲染类型，如是一系列点还是一系列三角形等。任何一个绘制指令的调用都将把图元传递给OpenGL。这是其中的几个：$GL_POINTS、GL_TRIANGLES、GL_LINE_STRIP$
 
 以三维空间的一个三角形为例，输入的是三个3d点，作为顶点数据(Vertex Data)。依次经过：
-1）顶点着色器(Vertex Shader)，3d坐标变成另外一种3d坐标)；
+1）顶点着色器(Vertex Shader)，3d坐标变成标准化设备坐标(Normalized Device Coordinates, NDC),x y z 轴限制在[-1, 1],其余的被丢弃和剪裁，接着通过glViewport转化为屏幕空间坐标(Screen-space Coordinates)；
 
 2）图元装配(Primitive Assembly)，装配成指定的图元形状，这里是三角形；
 
