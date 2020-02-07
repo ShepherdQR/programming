@@ -1,0 +1,37 @@
+// 2020020417:33
+
+1. download the source package
+https://www.glfw.org/download.html
+
+2. 安装依赖库，
+sudo apt-get install build-dep glfw
+sudo apt-get install cmake xorg-dev libglu1-mesa-dev
+
+
+2. 进入 glfw3-3.x.x 目录，
+mkdir build
+cd build
+cmake ..
+make -j8
+sudo make install
+
+
+!!!!!注意cmakelists中的写法，find是glfw3，后面link的时候是glfw
+
+find_package(glfw3 REQUIRED)
+message(STATUS "Found glfw in ${GLFW_INCLUDE_DIR}")
+#include_directories(${glfw3_INCLUDE_DIRS})
+#link_directories(${glfw3_LIBRARY_DIRS})
+#add_definitions(${glfw3_DEFINITIONS})
+#if(NOT glfw3_FOUND)
+#    message(ERROR "glfw3 not found")
+#endif(NOT glfw3_FOUND)
+
+
+
+add_library(GLAD "./glad.c")
+
+
+add_executable(main main.cpp)
+
+target_link_libraries(main ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glfw GLAD)

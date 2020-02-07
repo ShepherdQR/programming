@@ -1,0 +1,52 @@
+\documentclass[UTF8]{article}
+\usepackage{ctex}
+\usepackage{multirow,booktabs}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,bm,mathrsfs,upgreek} 
+\usepackage[paper=a4paper,top=3.5cm,bottom=2.5cm,
+left=2.7cm,right=2.7cm,
+headheight=1.0cm,footskip=0.7cm]{geometry}
+\usepackage{color,graphicx,verbatim}
+\RequirePackage{setspace}%%ÐÐŒäŸà
+\setstretch{1.523}
+
+\begin{document}
+% built on 2020020719:45
+
+\section{basic}
+
+顶点数组对象：Vertex Array Object，VAO
+顶点缓冲对象：Vertex Buffer Object，VBO
+索引缓冲对象：Element Buffer Object，EBO或Index Buffer Object，IBO
+
+3D坐标转为2D坐标的处理过程是由OpenGL的图形渲染管线（Graphics Pipeline）管理。
+图形渲染管线可以被划分为几个阶段，每个阶段将会把前一个阶段的输出作为输入。
+所有这些阶段都是高度专门化的（它们都有一个特定的函数），并且很容易并行执行。
+
+显卡具有成千上万可并行执行的处理核心，每个核心在渲染管线的各个阶段运行各自的叫做着色器(Shader)的小程序，从而在图形渲染管线中快速处理数据。
+
+
+图元(Primitive)：指定数据（坐标和颜色值）的渲染类型，如是一系列点还是一系列三角形等。任何一个绘制指令的调用都将把图元传递给OpenGL。这是其中的几个：$GL_POINTS、GL_TRIANGLES、GL_LINE_STRIP$
+
+以三维空间的一个三角形为例，输入的是三个3d点，作为顶点数据(Vertex Data)。依次经过：
+1）顶点着色器(Vertex Shader)，3d坐标变成另外一种3d坐标)；
+
+2）图元装配(Primitive Assembly)，装配成指定的图元形状，这里是三角形；
+
+3)几何着色器(Geometry Shader)。几何着色器把图元形式的一系列顶点的集合作为输入，它可以通过产生新顶点构造出新的（或是其它的）图元来生成其他形状。例子中，它生成了另一个三角形。
+
+4)光栅化阶段(Rasterization Stage)，这里它会把图元映射为最终屏幕上相应的像素，生成供片段着色器(Fragment Shader)使用的片段(Fragment)。在片段着色器运行之前会执行裁切(Clipping)。裁切会丢弃超出你的视图以外的所有像素，用来提升执行效率。
+OpenGL中的一个片段是OpenGL渲染一个像素所需的所有数据。
+
+5)片段着色器的主要目的是计算一个像素的最终颜色，这也是所有OpenGL高级效果产生的地方。片段着色器包含3D场景的数据（比如光照、阴影、光的颜色等等）。
+
+6)Alpha测试和混合(Blending)阶段。最终阶段。这个阶段检测片段的对应的深度（和模板(Stencil)）值，用它们来判断这个像素是其它物体的前面还是后面，决定是否应该丢弃。这个阶段也会检查alpha值（alpha值定义了一个物体的透明度）并对物体进行混合(Blend)。所以，即使在片段着色器中计算出来了一个像素输出的颜色，在渲染多个三角形的时候最后的像素颜色也可能完全不同。
+
+对于大多数场合，只需要配置顶点和片段着色器。必须定义至少一个顶点着色器和一个片段着色器（因为GPU中没有默认的顶点/片段着色器)。几何着色器是可选的，通常按默认。
+
+
+
+
+
+
+
+\end{document}

@@ -49,3 +49,14 @@ get pull origin master
 git add .
 git commit -m 'day4'
 git push -u origin master
+
+
+
+
+day5 2020020720:08:
+git init
+git reomte add origin git@github.com:ShepherdQR/programming.git
+get pull origin master
+git add .
+git commit -m 'day5'
+git push -u origin master

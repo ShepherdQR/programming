@@ -1,3 +1,6 @@
+
+// test teapot
+
 #include <GL/glut.h>
 
 void init(void)
