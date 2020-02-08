@@ -21,6 +21,6 @@ endif(NOT OPENGL_FOUND)
 #aux_source_directory(. SRC_LIST)
 
 
-add_executable(main main.cpp)
+add_executable(main gl001opengl_teapot.cpp)
 
 target_link_libraries(main ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
