@@ -43,10 +43,68 @@ OpenGL中的一个片段是OpenGL渲染一个像素所需的所有数据。
 
 对于大多数场合，只需要配置顶点和片段着色器。必须定义至少一个顶点着色器和一个片段着色器（因为GPU中没有默认的顶点/片段着色器)。几何着色器是可选的，通常按默认。
 
+\subsection{opengl基本流程}
+\begin{comment}
+    // opengl程序流程
+/*
+    // :: 初始化代码（只运行一次,除非物体频繁改变） ::
+    // 1. 绑定顶点数组对象VAO
+    glBindVertexArray(VAO);
+    // 2. 把顶点数组复制到缓冲中供OpenGL使用
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    // 3. 复制索引数组到一个索引缓冲中供OpenGL使用
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    // 4. 设置顶点属性指针
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    [...]
+
+    // :: 绘制代码（渲染循环中） :: 
+    // 5. 绘制物体
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0)
+    glBindVertexArray(0);
+
+*/
 
 
+\end{comment}
 
 
+\subsection{shader}
+\begin{comment}
+    // 着色器结构
+/*
+    #version version_number
+    in type in_variable_name;//每个输入变量叫顶点属性(Vertex Attribute)
+    //OpenGL确保至少有16个包含4分量的顶点属性可用.以下三行注释代码可查询具体的顶点属性个数
+    //int nrAttributes;
+    //glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+    //std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << std::endl;
 
+    in type in_variable_name;
+
+    out type out_variable_name;
+
+    uniform type uniform_name;
+
+    int main()
+    {
+    // 处理输入并进行一些图形操作
+    ...
+    // 输出处理过的结果到输出变量
+    out_variable_name = weird_stuff_we_processed;
+    }
+
+*/
+\end{comment}
+Uniform是一种从CPU中的应用向GPU中的着色器发送数据的方式，全局变量，定义了不用会出问题
+
+
+在片段着色器中进行的所谓片段插值(Fragment Interpolation)的结果。当渲染一个三角形时，光栅化(Rasterization)阶段通常会造成比原指定顶点更多的片段。光栅会根据每个片段在三角形形状上所处相对位置决定这些片段的位置。
 
 \end{document}
