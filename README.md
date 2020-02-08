@@ -52,9 +52,18 @@ git push -u origin master
 
 
 
-
 day5 2020020720:08:
 day5 2020020801:25:
+git init
+git remote add origin git@github.com:ShepherdQR/programming.git
+git pull origin master
+git add .
+git commit -m 'day5'
+git push -u origin master
+
+
+
+day6 2020020822:52:
 git init
 git remote add origin git@github.com:ShepherdQR/programming.git
 git pull origin master

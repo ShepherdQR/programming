@@ -1,6 +1,8 @@
 
 // studying on 2020020720:12
-
+// studying on 2020020817:18
+// studying on 2020020822:48
+// background color changes with time, and drew 2 triangles.
 
 /*
     step2:建立一个顶点和一个片段着色器
@@ -9,23 +11,27 @@
 */
 
 /*
-// ..:: 初始化代码（只运行一次 (除非你的物体频繁改变)） :: ..
-// 1. 绑定VAO
+// :: 初始化代码（只运行一次,除非物体频繁改变） ::
+// 1. 绑定顶点数组对象VAO
 glBindVertexArray(VAO);
 // 2. 把顶点数组复制到缓冲中供OpenGL使用
 glBindBuffer(GL_ARRAY_BUFFER, VBO);
 glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-// 3. 设置顶点属性指针
+// 3. 复制索引数组到一个索引缓冲中供OpenGL使用
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+// 4. 设置顶点属性指针
 glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 glEnableVertexAttribArray(0);
 
 [...]
 
-// ..:: 绘制代码（渲染循环中） :: ..
-// 4. 绘制物体
+// :: 绘制代码（渲染循环中） :: 
+// 5. 绘制物体
 glUseProgram(shaderProgram);
 glBindVertexArray(VAO);
-someOpenGLFunctionThatDrawsOurTriangle();
+glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0)
+glBindVertexArray(0);
 
 */
 
@@ -33,15 +39,17 @@ someOpenGLFunctionThatDrawsOurTriangle();
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
 #include <iostream>
-
+#include <chrono>
+#include <math.h>
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+const float color_bump_back = 1.0;// set 0 to stop bumpping.
+int draw_two_triangles = 0;
 
 
 //用着色器语言GLSL(OpenGL Shading Language)创建顶点着色器,储存在一个C的字符串中
@@ -71,6 +79,8 @@ const char *fragmentShaderSource = "#version 330 core\n"
 
 int main()
 {
+    auto t_start = std::chrono::high_resolution_clock::now();
+
     // step1 initialization starts-------
 
     // glfw: initialize and configure
@@ -157,15 +167,66 @@ int main()
 
     // step3 input data to GPU starts-------
     // set up vertex data (and buffer(s)) and configure vertex attributes
-    float vertices[] = {
+    
+    float vertices1[] = {
         -0.5f, -0.5f, 0.0f, // left  
          0.5f, -0.5f, 0.0f, // right 
-         0.0f,  0.5f, 0.0f  // top   
+         0.0f,  0.5f, 0.0f  // top 
+    };
+
+
+    float vertices2[] = {
+         0.5f,  0.5f, 0.0f,  // top right
+         0.5f, -0.5f, 0.0f,  // bottom right
+        -0.5f, -0.5f, 0.0f,  // bottom left
+        -0.5f,  0.5f, 0.0f   // top left 
+    };
+    unsigned int indices2[] = {  // note that we start from 0!
+        0, 1, 3,  // first Triangle
+        1, 2, 3   // second Triangle
+    };
+
+
+
+    // 注意每个中间的数据都要有逗号，没有逗号后面的数据无效
+    //if(draw_two_triangles == 1)
+    float vertices[] = {
+        -0.5f, 0.0f, 0.0f, // left  
+        0.5f, 0.0f, 0.0f, // right 
+        0.0f,  0.5f, 0.0f,  // top
+        -0.5f, 0.0f, 0.0f, // left
+        0.5f, 0.0f, 0.0f, // right  
+        0.0f,  -0.5f, 0.0f // bottom  
+    };
+
+
+    float vertices3[] = {
+        // first triangle
+        -0.9f, -0.5f, 0.0f,  // left 
+        -0.0f, -0.5f, 0.0f,  // right
+        -0.45f, 0.5f, 0.0f,  // top 
+        // second triangle
+         0.0f, -0.5f, 0.0f,  // left
+         0.9f, -0.5f, 0.0f,  // right
+         0.45f, 0.5f, 0.0f   // top 
     }; 
 
-    unsigned int VBO, VAO;
+    unsigned int indices[] = {  // note that we start from 0!
+        0, 1, 2,  // first Triangle
+        3, 4, 5   // second Triangle
+    };
+
+    
+
+
+
+
+    unsigned int VAO, VBO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);//必须在每次要用索引渲染一个物体时绑定相应的EBO
+
+
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAO);
     /*
@@ -175,14 +236,21 @@ int main()
         3）通过glVertexAttribPointer调用与顶点属性关联的顶点缓冲对象。
     */
         //以下两行复制顶点数组到缓冲中供OpenGL使用
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);//通过顶点缓冲对象(Vertex Buffer Objects, VBO)管理内存
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     //目标缓冲类型，指定传输数据的大小(以字节为单位)，传送的数据，第四个参数指定了我们希望显卡如何管理给定的数据。它有三种形式：
     //GL_STATIC_DRAW ：数据不会或几乎不会改变。
     //GL_DYNAMIC_DRAW：数据会被改变很多。
     //GL_STREAM_DRAW ：数据每次绘制时都会改变。能确保显卡把数据放在能够高速写入的内存部分
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);//bind EBO
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    //复制索引到缓冲.
+
     // step3 input data to GPU ends-------
+
+
+
 
 
     // step4 Linking Vertex Attributes starts-
@@ -211,31 +279,46 @@ int main()
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
 
+    // remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
     // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0); 
 
 
-    // uncomment this call to draw in wireframe polygons.
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);// uncomment this call to draw in wireframe polygons.
+
 
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
         // input
-        // -----
         processInput(window);
 
+        
+        auto t_now = std::chrono::high_resolution_clock::now();
+        float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
+
+        glClearColor(color_bump_back * (sin(time * 4.0f) + 1.0f) / 2.0f, 0.2f, 0.3f, 1.0f);
+        
+
         // render
-        // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         // draw our first triangle
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        glDrawArrays(GL_TRIANGLES, 0, 3);//图元类型；顶点数组的起始索引0；绘制顶点个数是3
+
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        //图元类型；顶点数组的起始索引0；绘制顶点个数是6
+        
+       
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);//参数：绘制模式；顶点数；索引类型；EBO偏移量。
+
         // glBindVertexArray(0); // no need to unbind it every time 
  
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -248,6 +331,7 @@ int main()
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
