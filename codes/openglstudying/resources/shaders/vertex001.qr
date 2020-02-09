@@ -2,6 +2,8 @@
 // date:        built on 2020020918:30
 // name:        vertex001.qr
 
+//用着色器语言GLSL(OpenGL Shading Language)创建顶点着色器
+
 #version 330 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
@@ -15,3 +17,5 @@ void main()
     gl_Position = vec4(-1.0 * aPos + transformation, 1.0);//upside down
     outColor = aColor;
 }
+//layout标识着链接顶点数据，(location = 0) 这个是设置输入变量的位置
+//第4个维度vec.w用在透视除法(Perspective Division)上

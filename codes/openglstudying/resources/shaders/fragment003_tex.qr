@@ -1,0 +1,35 @@
+// function:    texture
+// date:        built on 2020020920:54
+// name:        fragment003_tex.qr
+
+#version 330 core
+out vec4 FragColor;
+
+in vec3 outColor;
+in vec2 TexCoord;
+
+uniform float mixValue;
+
+// texture sampler
+uniform sampler2D texture1;
+uniform sampler2D texture2;
+
+void main()
+{
+	//FragColor = texture(texture1, TexCoord) * vec4(outColor, 1.0);
+
+		// linearly interpolate between both textures 0.2 means (80% texture1, 20% texture2)(80% container, 20% awesomeface)
+	//FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);
+
+
+		// smile towards the other side
+	//FragColor = mix(texture(texture1, 0.5 *TexCoord), texture(texture2, vec2(1.0 - TexCoord.x, TexCoord.y)), 0.2);
+	//2 *TexCoord, 渲染起来图像是原来的0.5大小
+
+
+	//FragColor = mix(texture(texture1, TexCoord), texture(texture2, vec2(1.0 - TexCoord.x, TexCoord.y)), 0.2);
+
+
+	FragColor = mix(texture(texture1, TexCoord), texture(texture2, vec2(1.0 - TexCoord.x, TexCoord.y)), mixValue);
+	
+}
