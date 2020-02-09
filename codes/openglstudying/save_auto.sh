@@ -56,7 +56,7 @@ echo $build_folder
 
 cp $build_folder/main $file_name
 cp $main_cpp_name $file_name
-cp glad.c $file_name
+#cp glad.c $file_name
 cp CMakeLists.txt $file_name
 
 

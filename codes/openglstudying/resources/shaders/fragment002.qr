@@ -1,0 +1,15 @@
+// function:    shaderProgramColorChanging
+// date:        built on 2020020918:25
+// name:        fragment002.qr
+
+#version 330 core
+
+out vec4 FragColor;
+in vec3 outColor;
+uniform vec4 changingColor;
+
+void main()
+{
+    FragColor = vec4(outColor, 1.0f);
+    FragColor = changingColor;
+}

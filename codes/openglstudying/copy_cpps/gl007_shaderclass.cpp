@@ -3,7 +3,7 @@
 // studying on 2020020817:18
 // studying on 2020020822:48
 // studying on 2020020900:00, shader
-
+// studying on 2020020918:05, shader class
 
 // background color changes with time, and drew 2 triangles.
 
@@ -13,6 +13,8 @@
     step4:设置OpenGL中顶点数据与顶点着色器顶点属性之间的连接
 */
 
+
+// negative values make the color black.
 
 /*
     顶点数组对象(Vertex Array Object, VAO)可以像顶点缓冲对象那样被绑定，任何随后的顶点属性调用都会储存在这个VAO中。VAO储存：
@@ -29,6 +31,8 @@
 #include <chrono>
 #include <math.h>
 
+#include "include/shader001_s.h"
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
@@ -37,7 +41,6 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 const float color_bump_back = 1.0;// set 0 to stop bumpping.
 
-
 //用着色器语言GLSL(OpenGL Shading Language)创建顶点着色器,储存在一个C的字符串中
 /*
     in 声明所有的输入顶点属性(Input Vertex Attribute)
@@ -45,36 +48,6 @@ const float color_bump_back = 1.0;// set 0 to stop bumpping.
     layout标识着链接顶点数据，(location = 0) 这个是设置输入变量的位置
     第4个维度vec.w用在透视除法(Perspective Division)上
 */
-const char *vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "layout (location = 1) in vec3 aColor;\n"
-    "out vec3 vertexColor;\n"
-    "void main()\n"
-    "{\n"
-    //"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"//向量可以重组(Swizzling)
-    "   gl_Position = vec4(aPos, 1.0);\n"//向量可以重组(Swizzling)
-    //"   vertexColor = vec4(0.5, 0.0, 0.0, 1.0);\n" // 把输出变量设置为暗红色
-    "   vertexColor = aColor;\n"
-    "}\0";
-
-
-//用着色器语言GLSL(OpenGL Shading Language)创建片段着色器,储存在一个C的字符串中
-const char *fragmentShader1Source = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "in vec3 vertexColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(vertexColor, 1.0f);\n"
-    //"   FragColor = vertexColor;\n"
-    "}\n\0";
-const char *fragmentShader2Source = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "uniform vec4 ourColor;\n"//全局变量，定义了不用会出问题
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
-    "   FragColor = ourColor;\n"
-    "}\n\0";
 
 
 
@@ -119,74 +92,10 @@ int main()
 
     // step2 compile and bind shaders start---
 
-    // build and compile vertex shader
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);// 着色器源码附加到着色器对象上:要编译的着色器对象；源码字符串数量；顶点着色器的真正源码；参数4先设为NULL
-    glCompileShader(vertexShader);//compile
-        // check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    
-    //---------------
-    // build and compile fragment shaders--01
-    unsigned int fragmentShaderOrange = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShaderOrange, 1, &fragmentShader1Source, NULL);
-    glCompileShader(fragmentShaderOrange);
-        // check for shader compile errors
-    glGetShaderiv(fragmentShaderOrange, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShaderOrange, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-        //着色器程序对象(Shader Program Object)：多个着色器合并之后并最终链接完成的版本。需要各级着色器之间输入输出匹配。渲染对象时激活着色器程序，渲染时调用。
-    unsigned int shaderProgramOrange = glCreateProgram();//创建程序对象
-    glAttachShader(shaderProgramOrange, vertexShader);//把着色器附加到程序上
-    glAttachShader(shaderProgramOrange, fragmentShaderOrange);
-    glLinkProgram(shaderProgramOrange);
-        // check for linking errors
-    glGetProgramiv(shaderProgramOrange, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgramOrange, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-    
+    Shader shaderProgramColorPalette("vertex001.qr", "fragment001.qr");
+    Shader shaderProgramColorChanging("vertex001.qr", "fragment002.qr");
 
 
-    // build and compile fragment shaders--02
-    unsigned int fragmentShaderYellow = glCreateShader(GL_FRAGMENT_SHADER); 
-    glShaderSource(fragmentShaderYellow, 1, &fragmentShader2Source, NULL);
-    glCompileShader(fragmentShaderYellow);
-        // check for shader compile errors
-    glGetShaderiv(fragmentShaderYellow, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShaderYellow, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-        //创建与连接着色器程序对象(Shader Program Object)
-    unsigned int shaderProgramYellow = glCreateProgram();//创建程序对象
-    glAttachShader(shaderProgramYellow, vertexShader);//把着色器附加到程序上
-    glAttachShader(shaderProgramYellow, fragmentShaderYellow);
-    glLinkProgram(shaderProgramYellow);
-        // check for linking errors
-    glGetProgramiv(shaderProgramYellow, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgramYellow, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-
-
-    //把着色器对象链接到程序对象以后，删除着色器对象,因为不再需要了
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShaderOrange);
-    glDeleteShader(fragmentShaderYellow);
     // step2 compile and bind shaders end---
 
 
@@ -355,23 +264,31 @@ int main()
         //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // another time changing codes
+        float timeValue = glfwGetTime();//运行秒数
+        float greenValue = sin(timeValue) / 2.0f + 0.5f;
 
-        // render orange---1
-        glUseProgram(shaderProgramOrange);
+
+        // render shaderProgramColorPalette---1
+        shaderProgramColorPalette.use();
+        shaderProgramColorPalette.set3f("transformation", sin(timeValue)-0.45, cos(timeValue), 0.0f);
         glBindVertexArray(VAOs[0]); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         glDrawArrays(GL_TRIANGLES, 0, 3);
         //图元类型；顶点数组的起始索引0；绘制顶点个数是6
 
+
+
+
         
-        // render yellow---2
-        glUseProgram(shaderProgramYellow);// be sure to activate the shader before any calls to glUniform
+        // render shaderProgramColorChanging---2
+        shaderProgramColorChanging.use();// be sure to activate the shader before any calls to glUniform
 
         // update shader uniform
         // be sure to activate the shader before any calls to glUniform
-        float timeValue = glfwGetTime();//运行秒数
-        float greenValue = sin(timeValue) / 2.0f + 0.5f;
-        int vertexColorLocation = glGetUniformLocation(shaderProgramYellow, "ourColor");// 查找uniform变量位置, -1表示没找到
-        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);//opengl核心是c库，不支持重载，所以用4f表示传递float
+        
+
+        shaderProgramColorChanging.set4f("changingColor", 0.0f, greenValue, 0.0f, 1.0f);
+  
             // draw triangles
         glBindVertexArray(VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -379,10 +296,6 @@ int main()
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);//参数：绘制模式；顶点数；索引类型；EBO偏移量。
         // glBindVertexArray(0); // no need to unbind it every time
 
-
-
-        
-        
 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -403,7 +316,6 @@ int main()
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -411,7 +323,6 @@ void processInput(GLFWwindow *window)
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and 
