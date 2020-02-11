@@ -84,3 +84,14 @@ git pull origin master
 git add .
 git commit -m 'day7'
 git push -u origin master
+
+
+
+
+day8 202002120222:
+git init
+git remote add origin git@github.com:ShepherdQR/programming.git
+git pull origin master
+git add .
+git commit -m 'day8'
+git push -u origin master

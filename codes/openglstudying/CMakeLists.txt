@@ -39,7 +39,7 @@ message(STATUS "Found glfw in ${GLFW_INCLUDE_DIR}")
 add_library(GLAD "./include/glad.c")
 
 file(GLOB allll *.cpp)
-message("Building the main cpp: "${allll})
+message("Building the main cpp: " ${allll})
 add_executable(main ${allll} ./include/stb_image.cpp)
 
 target_link_libraries(main ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glfw GLAD)
