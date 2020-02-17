@@ -45,6 +45,7 @@
 //#include "include/functions.h"
 //#include "resources/data/data.h"
 
+using namespace std;
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -191,6 +192,21 @@ int main()
     };
 
 
+    // world space positions of our cubes
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f,  0.0f,  0.0f),
+        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f,  3.0f, -7.5f),
+        glm::vec3( 1.3f, -2.0f, -2.5f),
+        glm::vec3( 1.5f,  2.0f, -2.5f),
+        glm::vec3( 1.5f,  0.2f, -1.5f),
+        glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
+
+
 
     unsigned int VAOs[4], VBOs[4], EBOs[4];
     glGenVertexArrays(4, VAOs);// 注意创建的是VAO时此处要 &VAO
@@ -334,6 +350,7 @@ int main()
 
     // render loop
     // -----------
+    int k_lock(0);
     while (!glfwWindowShouldClose(window))
     {
         // input
@@ -355,40 +372,56 @@ int main()
 
         
 
+        
+
         // render shaderProgramTexture01 --3
-        
-        
+
             // bind textures on corresponding texture units
         glActiveTexture(GL_TEXTURE0);//激活纹理单元.纹理单元GL_TEXTURE0默认总是被激活
         glBindTexture(GL_TEXTURE_2D, texture1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
-
-
-    
-        
-
-        // render box
         shaderProgramTexture01.use();
         
         
 
 
-        glm::mat4 model= glm::mat4(1.0f); 
+        //glm::mat4 model= glm::mat4(1.0f); 
         glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 projection  = glm::mat4(1.0f);
 
-        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-        view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+        view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));//这里改变是场景中的所有物体，如这里是所有物体后退3
+        projection = glm::perspective(glm::radians(45.0f), 1.0f * (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        // 只改变FOV，越小，显示的区域约小，物体越近，看起来越大。
+        //宽高比变大，会变上下长，变小会变左右长
 
-        unsigned int modelLoc = glGetUniformLocation(shaderProgramTexture01.ID, "model");
+
+            // model matrix
+        //unsigned int modelLoc = glGetUniformLocation(shaderProgramTexture01.ID, "model");
+        //glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+            // view matrix
         unsigned int viewLoc  = glGetUniformLocation(shaderProgramTexture01.ID, "view");
-        unsigned int projectionLoc  = glGetUniformLocation(shaderProgramTexture01.ID, "projection");
+        //glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
 
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+
+        float radius = 10.0f;
+        float camX = sin(glfwGetTime()) * radius;
+        float camZ = cos(glfwGetTime()) * radius;
+        glm::mat4 view_rotation = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        view_rotation = glm::lookAt(
+            glm::vec3(camX, 0.0, camZ),//position
+            glm::vec3(0.0, 0.0, 0.0),//focuspoint
+            glm::vec3(0.0, 1.0, 0.0)//up
+        );
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view_rotation[0][0]);
+
+
+
+            // projection matrix
+        unsigned int projectionLoc  = glGetUniformLocation(shaderProgramTexture01.ID, "projection");
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &projection[0][0]);
 
         
@@ -400,14 +433,29 @@ int main()
 
 
         glBindVertexArray(VAOs[1]);
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
         
+        for (unsigned int i = 0; i < 10; ++i)
+        {
+            // calculate the model matrix for each object and pass it to shader before drawing
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, cubePositions[i]);
+            float angle = 20.0f * i;
+            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            
+            //if(i==0 | (i+1)%3==0)
+            if(i%3==0)
+            {
+            model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 0.3f, 0.5f));
+            if( k_lock == 0)
+            cout << "rotation number is: " << i << endl;
+            }
+            unsigned int modelLoc = glGetUniformLocation(shaderProgramTexture01.ID, "model");
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
-
-
-
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+        k_lock = 1;
 
 
 
@@ -418,13 +466,14 @@ int main()
     }
 
     // optional: de-allocate all resources once they've outlived their purpose:
-    // ------------------------------------------------------------------------
     glDeleteVertexArrays(4, VAOs);
     glDeleteBuffers(4, VBOs);
     glDeleteBuffers(4, EBOs);
 
+
+
+
     // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
     glfwTerminate();
     return 0;
 }
