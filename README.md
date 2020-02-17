@@ -100,6 +100,7 @@ git push -u origin master
 
 
 day9 2020021722:12:
+day9 2020021801:15:
 git init
 git remote add origin git@github.com:ShepherdQR/programming.git
 git pull origin master

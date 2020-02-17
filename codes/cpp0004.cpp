@@ -1,23 +1,24 @@
 // time 2020013014:48
-// class
+// class 01
 
 #include<iostream>
 #include<stdio.h>
 using namespace std;
 
 /*
-class Minion{
-Name:
-Hair_color:
-Eye_number:
-Clothes_type;
+    class Minion{
+    Name:
+    Hair_color:
+    Eye_number:
+    Clothes_type;
 
-GetMinionName();
-CountEyeNum();
-SetHairColor();
-SelectClothType();
-};
+    GetMinionName();
+    CountEyeNum();
+    SetHairColor();
+    SelectClothType();
+    };
 */
+
 
 class CreateRectangle{
     public:
@@ -41,7 +42,6 @@ class CreateRectangle{
 };
 
 
-
 class CreateRectangle2{
     public:
         int w, h;
@@ -49,7 +49,6 @@ class CreateRectangle2{
         int Area();
         int Perimeter();
 };
-
 void CreateRectangle2::Init(int w_in, int h_in){
     w = w_in;
     h = h_in;
@@ -57,39 +56,40 @@ void CreateRectangle2::Init(int w_in, int h_in){
     cout << "width is: "<< w << endl;
     cout << "height is: "<< h << endl;
 }
-
 int CreateRectangle2::Area(){
     return w * h;
 }
-
 int CreateRectangle2::Perimeter(){
     return 2 *(w +h);
 }
 
 
-// 构建内联函数，出错了 ??S
-// class CreateRectangle3{
-    
+/*
+    构建内联函数，出错了 ??S
+    class CreateRectangle3{
+        
 
-//         inline void Input3();
-//     //private:
-//     public:
-//         int w, h;    
-//         int Area3(){
-//             return w*h;
-//             cout << w*h << endl;
-//         };// attention ;
-    
+            inline void Input3();
+        //private:
+        public:
+            int w, h;    
+            int Area3(){
+                return w*h;
+                cout << w*h << endl;
+            };// attention ;
+        
 
 
-// };// attention ;
-// void CreateRectangle3::Input3(int w_in, int h_in){
-//     w = w_in;
-//     h = h_in;
-//     cout << "This is a rectangle" << endl;
-//     cout << "width is: "<< w << endl;
-//     cout << "height is: "<< h << endl;
-// }
+    };// attention ;
+    void CreateRectangle3::Input3(int w_in, int h_in){
+        w = w_in;
+        h = h_in;
+        cout << "This is a rectangle" << endl;
+        cout << "width is: "<< w << endl;
+        cout << "height is: "<< h << endl;
+    }
+*/
+
 
 
 class Location20200216{
@@ -114,7 +114,6 @@ void Location20200216::init(int x_in, int y_in){
     x = x_in;
     y = y_in;
 }
-
 
 
 class Complex20200216{
@@ -200,6 +199,45 @@ class Complex17{
 };
 
 
+class Test1{
+    private:
+    public:
+        Test1(){}
+        Test1(Test1 & test_1){
+            cout << "Copy-constructor is called." << endl;
+        }
+};
+void Function1(Test1 test_2){}// test_2 is initializated by copy-instructor
+
+
+class Test2{
+    public:
+        int xx;
+        Test2( int xx_in = 0){
+            xx = xx_in;
+            cout << "ooops" << endl;
+        };
+        Test2(const Test2 & xx_in2){
+            xx = xx_in2.xx;
+            cout << "Copy-constructor is called, too." << endl;
+        }
+};
+Test2 Func2(){
+    Test2 zz;
+    Test2 yy(zz);
+    Test2 yy2;
+    Test2 yy3;
+    return yy;
+}// when Func2 is used in main, the output is 
+// ooops
+// Copy-constructor is called, too.
+// ooops
+// ooops
+// 0
+// just like the four Test2 objects in Func2.
+
+
+
 
 
 
@@ -210,7 +248,6 @@ class Complex17{
 void PrintRectangle(CreateRectangle &r6){
     cout << r6.Area()<< endl << r6.Perimeter()<<endl;
 }
-
 
 int main(){
     int w, h;
@@ -274,6 +311,12 @@ int main(){
     Complex17 c17(22,1);
     Complex17 c18(c17);
     c18.Out();
+
+    Test1 c19;
+    Function1(c19);// 实参c19的值和形参test_2的值不一定
+
+    //Func2();
+    cout << Func2().xx << endl;
 
 
 
