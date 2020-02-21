@@ -1,3 +1,13 @@
+%------------
+%  ** Author: Shepherd Qirong
+%  ** Date: 2020-01-19 21:40:05
+%  ** Github: https://github.com/ShepherdQR
+%  ** LastEditors: Shepherd Qirong
+%  ** LastEditTime: 2020-02-20 22:17:54
+%  ** Copyright (c) 2019--20xx Shepherd Qirong. All rights reserved.
+%------------
+
+
 \documentclass[UTF8]{article}
 \usepackage{ctex}
 \usepackage{multirow,booktabs}
@@ -10,13 +20,13 @@ headheight=1.0cm,footskip=0.7cm]{geometry}
 \setstretch{1.523}
 
 \begin{document}
-Started on 2002011920:23
+Started on 2002011920:23ww
 
 程序设计实习，北京大学，信息科学技术学院
 郭炜，刘家瑛
 *code： 代码
 *question: 提出的问题
-
+d
 
 \section{基础包括c等}
 \subsection{函数指针}
@@ -272,13 +282,58 @@ protected
 1）static成员变量和成员函数，是所有对象共享的；
 2） sizeof 不计算static；
 3) 不作用于具体对象，不需要通过对象访问；
-4) 本质是全局变量、全局函数。
-5） 使相关变量统一封装在类中，便于管理。如在矩形类中，定义所有矩形的总面积和矩形总个数两个static。
-访问：
+4) 本质是全局变量、全局函数；
+5） 使相关全局变量和全局函数统一封装在类中，便于管理。如在矩形类中，定义所有矩形的总面积和矩形总个数两个static。
+访问；
+6）static 函数中不能访问静态的成员变量和函数
+7）在统计生成对象总数时，记得要写复制构造函数构造时的记数。
 % Class::PrintTotal();
 % Class r; r.PrintTotal();
 % Class *p = &r; r->PrintTotal();
 % Class &ref = r; int n = ref.PrintTotal(); 
+
+
+\subsection{成员对象和封闭类}
+成员对象：一个类的成员变量是另一个类的对象。
+封闭类（Enclosing）：有成员对象的类。
+
+1）封闭类构造函数的初始化方法为：类名::构造函数(参数表):成员变量i(参数表),成员变量j(参数表)...{...}
+2）封闭类对象生成时，先按成员对象的说明顺序生成成员对象的构造函数，再执行封闭类的构造函数；消亡时相反，类似栈的。
+
+
+\subsection{友元函数}
+1）friend关键字，类的友元函数可以访问该类的私有成员；
+2）一个类的成员函数（包括构造函数、析构函数）可以作为另一个类的友元；
+3)类a中声明友元类b时，b的成员函数可以访问a的私有成员，友元类之间的关系不能传递，不能继承。
+
+
+\subsection{this指针}
+c++开始没有编译器，翻译成c来编译。翻译成c时，成员函数翻译成全局函数，全局函数的变量要增加一个指向对象的this指针。
+1）作用是指向成员函数作用的对象；
+2）静态成员函数不能用this指针，静态成员函数的真实参数个数就是所定义的个数。
+
+\subsection{const常量}
+常量对象: const Class a;
+
+
+常量成员函数:
+1)函数作用期间不能修改成员变量。所以也不能调用同类的非常量函数（静态成员变量可以修改，静态成员函数可以调用）；
+2) 函数说明后加const关键字。
+3) 名字和参数相同的const函数和非const函数，算重载。
+
+常引用：
+1）不修改其引用变量的值。
+2）用对象的尝引用 %const Sample & object,
+防止对象被修改，对象作为函数参数的时候，该参数生成时调用复制构造函数，效率低； 指针做参数比较难看的问题。
+
+
+
+
+
+
+
+
+
 
 
 \begin{comment}

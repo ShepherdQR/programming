@@ -3,3 +3,4 @@ cpp0002： 引用，函数的返回值作为引用，常引用。
 cpp0003：定义常量,常量指针
 cpp0004: class 01
 cpp0005: class 02
+cpp0006: class: Enclosing

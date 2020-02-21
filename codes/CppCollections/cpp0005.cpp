@@ -29,7 +29,7 @@ class Complex{
             imagination = i_in;
             cout << "Complex: Normal Constructor called, and the number is: ( " << real << ", " << imagination << " )." << endl;
             //p = new char[10];
-            complexNumber ++;
+            complexNumber += 1;
             sumTotal[0] += real;
             sumTotal[1] += imagination;
         }
@@ -37,7 +37,7 @@ class Complex{
             real = 0;
             imagination = 0;
             cout << "Zero: Normal Constructor called, and the number is: ( " << real << ", " << imagination << " )." << endl;
-            complexNumber ++;
+            complexNumber += 1;
             sumTotal[0] += real;
             sumTotal[1] += imagination;
         }
@@ -50,7 +50,7 @@ class Complex{
             real = copy_in.real;
             imagination = copy_in.imagination;
             cout << "Copy Constructor called, and the number is: ( " << real << ", " << imagination << " )." << endl;
-            complexNumber ++;
+            complexNumber  += 1;
             sumTotal[0] += real;
             sumTotal[1] += imagination;
         }
@@ -58,7 +58,7 @@ class Complex{
          ~Complex(){
         //     delete [] p;
             cout << "Destructor called, and the number is: ( " << real << ", " << imagination << " )." << endl;
-            complexNumber --;
+            complexNumber -= 1;
             sumTotal[0] -= real;
             sumTotal[1] -= imagination;
          }//有问题
@@ -84,7 +84,7 @@ Complex::Complex(double r){
     real = r;
     imagination = 0;
     cout << "Real: Normal Constructor called, and the number is: ( " << real << ", " << imagination << " )." << endl;
-    complexNumber ++;
+    complexNumber += 1;
     sumTotal[0] += real;
     sumTotal[1] += imagination;
 }
@@ -92,7 +92,7 @@ Complex::Complex(Complex c1, Complex c2){
     real = c1.real + c2.real;
     imagination = c1.imagination + c2. imagination;
     cout << "Combine: Normal Constructor called, and the number is: ( " << real << ", " << imagination << " )."  << endl;
-    complexNumber ++;
+    complexNumber += 1;
     sumTotal[0] += real;
     sumTotal[1] += imagination;
 }
