@@ -1,0 +1,4 @@
+/home/jellyfish/programming/codes/projects/build20200225174205/CMakeFiles/rebuild_cache.dir
+/home/jellyfish/programming/codes/projects/build20200225174205/CMakeFiles/edit_cache.dir
+/home/jellyfish/programming/codes/projects/build20200225174205/CMakeFiles/main.dir
+/home/jellyfish/programming/codes/projects/build20200225174205/CMakeFiles/GLAD.dir

@@ -1,6 +1,15 @@
+#************
+#  * @Author: Shepherd Qirong
+#  * @Date: 2020-01-20 19:40:31
+#  * @Github: https://github.com/ShepherdQR
+#  * @LastEditors: Shepherd Qirong
+#  * @LastEditTime: 2020-02-23 14:30:52
+#  * @Copyright (c) 2019--20xx Shepherd Qirong. All rights reserved.
+#************
 cpp0001： 比较大小的 指针函数
 cpp0002： 引用，函数的返回值作为引用，常引用。
 cpp0003：定义常量,常量指针
 cpp0004: class 01
 cpp0005: class 02
 cpp0006: class: Enclosing
+cpp0007: class, const

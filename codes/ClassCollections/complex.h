@@ -1,3 +1,11 @@
+/* ===========
+//  * Author: Shepherd Qirong
+//  * Date: 2020-02-19 15:26:15
+//  * Github: https://github.com/ShepherdQR
+//  * LastEditors: Shepherd Qirong
+//  * LastEditTime: 2020-02-23 19:40:08
+//  * Copyright (c) 2019--20xx Shepherd Qirong. All rights reserved.
+*/
 /*** 
  * @Author: Shepherd Qirong
  * @Date: 2020-02-19 15:26:15
@@ -14,8 +22,17 @@ class Complex{
         double real, imagination;
     public:
         void complexPrint();
-        Complex(double r_in, double i_in);
+        //double real, imagination;
+        Complex(double , double  );
+        Complex(){real = 0; imagination = 0;}
+        //Complex(const Complex & , const Complex & );
         Complex AddOne();
+    
+        Complex operator+ (const Complex &);
+        Complex operator- (const Complex &);
+        Complex operator+ (double r);  
+        //friend Complex operator+ (double r, const Complex & c);  
+        
 };
 
 #endif

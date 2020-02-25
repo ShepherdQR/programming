@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++0x   CMakeFiles/main.dir/cpp0008.cpp.o CMakeFiles/main.dir/openglstudying/include/stb_image.cpp.o CMakeFiles/main.dir/ClassCollections/complex.cpp.o CMakeFiles/main.dir/ClassCollections/exerciseClass.cpp.o  -o main -rdynamic -lGLU -lGL -lglut -lXmu -lXi /usr/local/lib/libglfw3.a libGLAD.a -lrt -lm -ldl -lX11 -lpthread 
