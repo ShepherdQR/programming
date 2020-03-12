@@ -3,7 +3,7 @@
 //  * Date: 2020-02-19 23:23:57
 //  * Github: https://github.com/ShepherdQR
 //  * LastEditors: Shepherd Qirong
-//  * LastEditTime: 2020-02-23 21:10:13
+//  * LastEditTime: 2020-02-29 13:57:37
 //  * Copyright (c) 2019--20xx Shepherd Qirong. All rights reserved.
 */
 /*** 
@@ -46,6 +46,7 @@ class CArray{
 };
 
 //================================
+//可变长的string
 class String{
     private:
         char *str;

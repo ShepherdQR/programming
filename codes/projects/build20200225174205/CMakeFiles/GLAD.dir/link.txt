@@ -1,2 +1,0 @@
-/usr/bin/ar qc libGLAD.a  CMakeFiles/GLAD.dir/home/jellyfish/programming/codes/openglstudying/include/glad.c.o
-/usr/bin/ranlib libGLAD.a

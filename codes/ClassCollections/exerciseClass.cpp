@@ -3,7 +3,7 @@
 //  * Date: 2020-02-19 23:21:42
 //  * Github: https://github.com/ShepherdQR
 //  * LastEditors: Shepherd Qirong
-//  * LastEditTime: 2020-02-23 21:12:26
+//  * LastEditTime: 2020-02-29 14:08:55
 //  * Copyright (c) 2019--20xx Shepherd Qirong. All rights reserved.
 */
 /*** 
@@ -120,11 +120,12 @@ String::~String(){
         delete []str;
 }
 
-String & String::operator = (const String &s){
+String& String::operator = (const String &s){
     // 返回值void不好，因为void在a=b=c会出错。
     // 用 String &会更好保持复制号原本的特性。
+    //　输入和输出的类型一样，可以实现传递
     if(str == s.str){
-        return *this;
+        return *this;//自身复制
     }
     if(str){
         delete []str;
@@ -140,6 +141,7 @@ String & String::operator = (const String &s){
 }
 
 String::String(String & s_in){
+    //　避免了调用浅拷贝出现的问题
     if(s_in.str){
         str = new char[strlen(s_in.str)+1];
         strcpy(str, s_in.str);
