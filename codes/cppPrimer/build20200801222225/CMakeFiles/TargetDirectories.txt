@@ -1,0 +1,3 @@
+/home/jellyfish/programming/codes/cppPrimer/build20200801222225/CMakeFiles/rebuild_cache.dir
+/home/jellyfish/programming/codes/cppPrimer/build20200801222225/CMakeFiles/edit_cache.dir
+/home/jellyfish/programming/codes/cppPrimer/build20200801222225/CMakeFiles/main.dir

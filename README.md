@@ -3,13 +3,20 @@
  * @Date: 2020-01-19 21:44:17
  * @Github: https://github.com/ShepherdQR
  * @LastEditors: Shepherd Qirong
- * @LastEditTime: 2020-03-13 00:50:56
+ * @LastEditTime: 2020-08-23 23:20:03
  * @Copyright (c) 2019--20xx Shepherd Qirong. All rights reserved.
  -->
 
 # Update log
 ### Started on 2002011920:23
 
+### day12 2020-08-23 23:19:46
+git init
+git remote add origin git@github.com:ShepherdQR/programming.git
+git pull origin master
+git add .
+git commit -m 'day12'
+git push -u origin master
 
 ### day11 2020-03-13 00:50:24
 git init

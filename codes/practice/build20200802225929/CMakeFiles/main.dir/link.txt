@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++0x   CMakeFiles/main.dir/practices20200802.cpp.o  -o main -rdynamic 

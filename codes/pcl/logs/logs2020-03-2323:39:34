@@ -1,0 +1,22 @@
+2020-03-2323:39:34
+Initialization time: 375ms.
+Loading file time: 211ms.
+Point number is: 32497
+Prepare for normals: 5ms.
+Compute normals time : 180ms.
+Drow normals time : 41ms.
+Total time: 66714ms.
+
+//
+
+Initialization time: 375ms.
+Failed to find match for field 'rgba'.
+Loading file time: 211ms.
+Point number is: 32497
+Prepare for normals time: 5ms.
+Normal ok
+(nx, ny, nz, curvature)= -0.101484, 0.22167, -0.969827, 0.000849736.
+Compute normals time: 180ms.
+normals are drawn.
+Drow normals time: 41ms.
+Total time: 66714ms.

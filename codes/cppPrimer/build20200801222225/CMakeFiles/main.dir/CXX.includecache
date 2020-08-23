@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+.././ClassCollections/CPPPChapter01.h
+iostream
+-
+string
+-
+
+.././ClassCollections/Sales_item.h
+iostream
+-
+string
+-
+
+/home/jellyfish/programming/codes/cppPrimer/cppp001.cpp
+iostream
+-
+string
+-
+vector
+-
+ctime
+-
+Sales_item.h
+/home/jellyfish/programming/codes/cppPrimer/Sales_item.h
+CPPPChapter01.h
+/home/jellyfish/programming/codes/cppPrimer/CPPPChapter01.h
+

@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+.././ClassCollections/e001Matrix.h
+iostream
+-
+fstream
+-
+
+/home/jellyfish/programming/codes/practice/practices20200802.cpp
+iostream
+-
+vector
+-
+string
+-
+e001Matrix.h
+/home/jellyfish/programming/codes/practice/e001Matrix.h
+

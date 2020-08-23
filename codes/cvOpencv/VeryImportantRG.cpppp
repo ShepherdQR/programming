@@ -1,0 +1,45 @@
+
+
+cv::Mat MainWindow::regionGrowFast(const cv::Mat &src, const cv::Point2i seed, int throld)
+{
+    //convert src to gray for getting gray value of every pixel
+    cv::Mat gray;
+    cv::cvtColor(src,gray, cv::COLOR_RGB2GRAY);
+
+    // set every pixel to black
+    cv::Mat result = cv::Mat::zeros(src.size(), CV_8UC1);
+    if((seed.x < 0) || (seed.y < 0))
+        return result;
+    result.at<uchar>(seed.y, seed.x) = 255;
+
+    //gray value of seed
+    int seed_gray = gray.at<uchar>(seed.y, seed.x);
+    //grow direction sequenc
+    int grow_direction[8][2] = {{-1,-1}, {0,-1}, {1,-1}, {1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}};
+    //seeds collection
+    std::vector<cv::Point2i> seeds;
+    seeds.push_back(seed);
+
+    //start growing
+    while(! seeds.empty()){
+        //get a seed
+        cv::Point2i current_seed = seeds.back();
+        seeds.pop_back();
+
+        for(int i = 0; i < 8; ++i){
+            cv::Point2i neighbor_seed(current_seed.x + grow_direction[i][0], current_seed.y + grow_direction[i][1]);
+            //check wether in image
+            if(neighbor_seed.x < 0 || neighbor_seed.y < 0 || neighbor_seed.x > (gray.cols-1) || (neighbor_seed.y > gray.rows -1))
+                continue;
+            int value = gray.at<uchar>(neighbor_seed.y, neighbor_seed.x);
+            if((result.at<uchar>(neighbor_seed.y, neighbor_seed.x) == 0) && (abs(value - seed_gray) <= throld)){
+                result.at<uchar>(neighbor_seed.y, neighbor_seed.x) = 255;
+                seeds.push_back(neighbor_seed);
+            }
+        }
+    }
+    return result;
+}
+————————————————
+版权声明：本文为CSDN博主「阿兵-AI医疗」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/webzhuce/java/article/details/81412508
